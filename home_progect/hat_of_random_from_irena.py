@@ -22,26 +22,27 @@ for row2 in range(2, sheet_zones.max_row+1): #Берет столбцы от 1 �
 #сохраняем изменяемый список в неизменяемый кортеж
 initial_list = tuple(people)
 
-
 #генерация нового списка дежурных
 def generate_new_list():
-
-#рандомизируем список
-    random.shuffle(people)
-
-#сшиваем список зон и рандомизированный список людей в словарь
-    duty_dictionary = dict(zip(zones, people))
+    random.shuffle(people) #рандомизируем список
+    duty_dictionary = dict(zip(zones, people)) #сшиваем список зон и рандомизированный список людей в словарь
     row_counter = 1
-#циклом выводим в 2 колонки список, соотнесённый со списком зон
-    for cells in duty_dictionary:
+    for cells in duty_dictionary: #циклом выводим в 2 колонки список, соотнесённый со списком зон
         output_zones = Label(main_window, text=str(cells), font=("Century Gothic", 14), bg='white', fg='black')
         output_zones.grid(column=1, row=row_counter)
         output_people = Label(main_window, text="     "+duty_dictionary.get(cells, 0) + "     ", font=("Century Gothic", 14), bg='white', fg='black')
         output_people.grid(column=2, row=row_counter)
         row_counter += 1
-#функция возвращает словарь
-    return duty_dictionary
+    return duty_dictionary #функция возвращает словарь
 
+def save_appointment_to_excel():
+    book = openpyxl.open("People_and_zones.xlsx", read_only=False)
+    sheet_archive = book.worksheets[2]  # Обращаемся к 2 листу в файле
+    archive_counter = 0
+    for i in range(0, len(zones)+1):
+        sheet_archive[f'A{archive_counter}'] = zones[archive_counter]
+        sheet_archive[f'B{archive_counter}'] = people[archive_counter]
+        archive_counter += 1
 
 #инициализация интерфейса
 main_window = Tk()
@@ -63,5 +64,8 @@ for inhabitant in people:
 #создаём кнопку и вешаем на неё функцию клика
 generate_new_appointment_list = Button(main_window, text="создать новый список", font=("Century Gothic", 14), bg='white', fg='black', command=generate_new_list)
 generate_new_appointment_list.grid(column=1, row=0)
+
+save_new_appointment_to_excel = Button(main_window, text='сохранить новый список в архив', bg='white', fg='black', command=save_appointment_to_excel )
+save_new_appointment_to_excel.grid(column=3, row=0)
 
 main_window.mainloop()
