@@ -44,6 +44,8 @@ def save_appointment_to_excel():
         sheet_archive[f'B{archive_counter}'] = people[i-1]
         archive_counter += 1
     book.save('People_and_zones.xlsx')
+
+
 #инициализация интерфейса
 main_window = Tk()
 main_window.geometry('1200x800')
