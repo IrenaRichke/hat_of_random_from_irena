@@ -67,11 +67,6 @@ def generate_new_list():
 #функция возвращает словарь
     return duty_dictionary
 
-#функция нажатия кнопки
-def clicked():
-#эта дичь уже вызывает основную функцию
-    generate_new_list()
-
 
 #инициализация интерфейса
 main_window = Tk()
@@ -91,7 +86,7 @@ for inhabitant in people:
     people_counter += 1
 
 #создаём кнопку и вешаем на неё функцию клика
-generate_new_appointment_list = Button(main_window, text="создать новый список", font=("Century Gothic", 14), bg='white', fg='black', command=clicked)
+generate_new_appointment_list = Button(main_window, text="создать новый список", font=("Century Gothic", 14), bg='white', fg='black', command=generate_new_list)
 generate_new_appointment_list.grid(column=1, row=0)
 
 main_window.mainloop()
