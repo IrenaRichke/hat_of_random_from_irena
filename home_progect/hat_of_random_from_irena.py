@@ -1,6 +1,7 @@
 from tkinter import *
 import random
 
+#список жильцов
 people = ['Степан',
           'Крис',
           'Катя',
@@ -28,8 +29,10 @@ people = ['Степан',
           'Шамиль',
           'Саша']
 
+#сохраняем изменяемый список в неизменяемый кортеж
 initial_list = tuple(people)
 
+#список зон ответственности
 zones = ['розовый туалет',
          'голубой туалет',
          'розовый душ',
@@ -47,60 +50,48 @@ zones = ['розовый туалет',
          'зал',
          'фримаркет']
 
-#output_data = {1111: "1111"}
-
-
+#генерация нового списка дежурных
 def generate_new_list():
+#рандомизируем список
     random.shuffle(people)
+#сшиваем список зон и рандомизированный список людей в словарь
     duty_dictionary = dict(zip(zones, people))
     row_counter = 1
+#циклом выводим в 2 колонки список, соотнесённый со списком зон
     for cells in duty_dictionary:
         output_zones = Label(main_window, text=str(cells), font=("Century Gothic", 14), bg='white', fg='black')
         output_zones.grid(column=1, row=row_counter)
         output_people = Label(main_window, text="     "+duty_dictionary.get(cells, 0) + "     ", font=("Century Gothic", 14), bg='white', fg='black')
         output_people.grid(column=2, row=row_counter)
         row_counter += 1
+#функция возвращает словарь
     return duty_dictionary
 
-
-'''def save_to_file():
-    file_work = open('database.txt', 'w')
-    file_work.write(str(output_data) + '\n')
-    file_work.close()
-'''
-
-
+#функция нажатия кнопки
 def clicked():
+#та дичь уже вызывает основную функцию
     generate_new_list()
 
 
-'''def save_button_clicked():
-    save_to_file()
-'''
-
 #инициализация интерфейса
-
-
 main_window = Tk()
 main_window.geometry('1200x800')
 main_window.configure(bg='white')
 main_window.title("HAT OF RANDOM by Korfitz SoftWare (2022)")
 
+#выводим список жильцов
 greeting = Label(main_window, text="   В Доме живут   ", font=("Century Gothic", 20), bg='white', fg='black')
 greeting.grid(column=0, row=0)
-
 people_counter = 0
 row_counter = 1
-
 for inhabitant in people:
     cell = Label(main_window, text=initial_list[people_counter], font=("Century Gothic", 14), bg='white', fg='black')
     cell.grid(column=0, row=row_counter)
     row_counter += 1
     people_counter += 1
 
+#создаём кнопку и вешаем на неё функцию клика
 generate_new_appointment_list = Button(main_window, text="создать новый список", font=("Century Gothic", 14), bg='white', fg='black', command=clicked)
 generate_new_appointment_list.grid(column=1, row=0)
-#save_current_appointment = Button(main_window, text="сохранить сгенерированный список", font=("OCR-A BT", 14), bg='white', fg='black', command=save_button_clicked)
-#save_current_appointment.grid(column=1, row=17)
 
 main_window.mainloop()
