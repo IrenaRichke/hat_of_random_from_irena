@@ -79,6 +79,8 @@ def clicked():
 '''
 
 #инициализация интерфейса
+
+
 main_window = Tk()
 main_window.geometry('1200x800')
 main_window.configure(bg='white')
