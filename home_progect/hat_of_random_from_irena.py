@@ -4,13 +4,10 @@ import random
 import openpyxl
 
 book = openpyxl.open("People_and_zones.xlsx", read_only=False) #Обращаемся к файлу
-
 sheet_people = book.worksheets[0] #Обращаемся к 1 листу в файле
 sheet_zones = book.worksheets[1] #Обращаемся к 2 листу в файле
-
-#Создаем пустые списки
-people = []
-zones = []
+people = [] #Создаем пустые списки
+zones = [] #Создаем пустые списки
 
 for row1 in range(2, sheet_people.max_row+1): #Берет столбцы от 1 до последнего
     people.append(sheet_people[row1][1].value) #Добавляем каждое значение(кроме заголовка) в список
@@ -67,6 +64,12 @@ def save_appointment_to_excel():
             sheet_archive[f'A{period_counter * shift_for_period + 17}'] = selection_archive #Запихиваем в последнюю строку списка название периода
         archive_counter += 1
     book.save('People_and_zones.xlsx')
+
+
+def show_from_archive():
+    book = openpyxl.open("People_and_zones.xlsx", read_only=False)
+    sheet_archive = book.worksheets[2]  # Обращаемся к 3 листу в файле
+
 
 
 #инициализация интерфейса
