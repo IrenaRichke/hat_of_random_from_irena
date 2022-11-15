@@ -45,20 +45,28 @@ def generate_new_list():
 
 def selected(event):
     selection = selector.get()
-    selection_monitor = Label(main_window, text=f"    вы выбрали: {selection}    ", font=("Arial", 14), bg='white', fg='red') 
+    selection_monitor = Label(main_window, text=f"    вы выбрали: {selection}    " , font=("Arial", 14), bg='white', fg='red')
     selection_monitor.grid(column=3, row=1)
 
 
 def save_appointment_to_excel():
     book = openpyxl.open("People_and_zones.xlsx", read_only=False)
     sheet_archive = book.worksheets[2]  # Обращаемся к 3 листу в файле
-    archive_counter = 1
-    
-#    for i in range(1, len(zones)+1):
-#        sheet_archive[f'A{archive_counter}'] = zones[i-1]
-#        sheet_archive[f'B{archive_counter}'] = people[i-1]
-#        archive_counter += 1
-#    book.save('People_and_zones.xlsx')
+    selection_archive = selector.get() #вынимаем из селектора период
+    archive_counter = 1 #Счетчик для строк
+    shift_for_period = 20 #Сдвиг для каждого периода вниз по таблице
+    period_counter = int(selector.current()) #вынимает из селектора индекс выбранного в комбобоксе значения
+    for i in range(1, len(zones)+1):
+        if period_counter == 0: #для первого периода индекс 0, поэтому дендрофекалим через +1
+            sheet_archive[f'A{archive_counter * (period_counter + 1)}'] = zones[i-1]
+            sheet_archive[f'B{archive_counter * (period_counter+ 1)}'] = people[i-1]
+            sheet_archive[f'A{period_counter + 17}'] = selection_archive #Запихиваем в последнюю строку списка название периода
+        else: #Для остальных периодов
+            sheet_archive[f'A{archive_counter + period_counter * shift_for_period}'] = zones[i - 1]
+            sheet_archive[f'B{archive_counter + period_counter * shift_for_period}'] = people[i - 1]
+            sheet_archive[f'A{period_counter * shift_for_period + 17}'] = selection_archive #Запихиваем в последнюю строку списка название периода
+        archive_counter += 1
+    book.save('People_and_zones.xlsx')
 
 
 #инициализация интерфейса
